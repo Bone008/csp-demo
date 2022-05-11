@@ -1,0 +1,15 @@
+<html>
+
+<head>
+  <title>Main page</title>
+</head>
+
+<body>
+  <h1> This is the main page</h1>
+  We propose the following films for <b>{{{type}}}</b> type:
+  {{#films}}
+  <div>* {{display}}</div>
+  {{/films}}
+</body>
+
+</html>

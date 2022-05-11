@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/Bone008/csp-demo#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "hjs": "0.0.6"
+
   }
 }
