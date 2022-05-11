@@ -1,0 +1,9 @@
+{
+    "editor.tabSize": 2,
+    "editor.wrappingIndent": "deepIndent",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "[json]": {
+        "editor.formatOnSave": false
+    }
+}
