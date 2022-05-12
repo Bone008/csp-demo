@@ -1,17 +1,13 @@
-function initialize() {
+$(function () {
   // Super pro functionality for toggle buttons
-  for (const btn of document.querySelectorAll(".btn-toggle")) {
-    btn.addEventListener('click', function () {
-      const description = this.parentNode.parentNode.querySelector('.description');
-      if (this.textContent === 'Show more') {
-        description.style.display = '';
-        this.textContent = "Show less";
-      } else {
-        description.style.display = 'none';
-        this.textContent = "Show more";
-      }
-    });
-  }
-}
-
-document.addEventListener('DOMContentLoaded', initialize);
+  $('.btn-toggle').click(function () {
+    const description = $(this).closest('.movie').find('.description');
+    if ($(this).text() === 'Show more') {
+      description.show();
+      $(this).text("Show less");
+    } else {
+      description.hide();
+      $(this).text("Show more");
+    }
+  });
+});

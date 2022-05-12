@@ -33,7 +33,7 @@ function getMain(req, res) {
 router
   .get('/', getMain)
   .get('/csp1', (req, res, next) => {
-    res.set('Content-Security-Policy', 'script-src none');
+    res.set('Content-Security-Policy', "script-src 'self' https://ajax.googleapis.com/");
     next();
   }, getMain)
 
