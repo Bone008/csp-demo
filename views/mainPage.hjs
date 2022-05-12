@@ -1,15 +1,30 @@
+<!DOCTYPE html>
 <html>
 
 <head>
   <title>Main page</title>
+  <script src="./movies.js"></script>
 </head>
 
 <body>
   <h1> This is the main page</h1>
-  We propose the following films for <b>{{{type}}}</b> type:
+  We propose the following films for <b>{{{searchedType}}}</b> type:
+  <table>
+    <tr>
+      <th>Title</th>
+      <th>Type</th>
+      <th></th>
+      <th></th>
+    </tr>
   {{#films}}
-  <div>* {{display}}</div>
+    <tr>
+      <td>{{title}}</td>
+      <td>{{type}}</td>
+      <td><button type="button" class="btn-toggle">Show more</button></td>
+      <td class="description" style="display: none;">{{{description}}}</td>
+    </tr>
   {{/films}}
+  </table>
 </body>
 
 </html>

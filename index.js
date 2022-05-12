@@ -12,6 +12,8 @@ app
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: false }))
 
+  // Serve static files
+  .use(express.static(__dirname + '/public'))
 
   .use('/', require('./routes/model'))
   .listen(port, () => {

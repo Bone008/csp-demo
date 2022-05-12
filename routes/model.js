@@ -5,38 +5,37 @@ const router = express.Router()
 
 var our_films = {
   "films": [
-    { "title": "Fast & Furious", "type": "Action" },
-    { "title": "Moon knight", "type": "Action" },
-    { "title": "The Batman", "type": "Action" },
-    { "title": "The Northman", "type": "Action" },
-    { "title": "Doctor Strange", "type": "Action" },
-    { "title": "Halo", "type": "Action" },
-    { "title": "Spartacus", "type": "Action" },
-    { "title": "The dark knight", "type": "Action" },
-    { "title": "Wolves", "type": "Action" },
-    { "title": "Uncharted", "type": "Action" },
-    { "title": "Top Gun", "type": "Action" },
-    { "title": "John wick", "type": "Action" },
-    { "title": "The train", "type": "Action" },
-    { "title": "Don't breath", "type": "Action" }
+    { "title": "Fast & Furious", "type": "Action", "description": "Lorem ipsum dolor <b>Fast & Furious</b> sit amet" },
+    { "title": "Moon knight", "type": "Action", "description": "Lorem ipsum dolor <b>Moon knight</b> sit amet" },
+    { "title": "The Batman", "type": "Action", "description": "Lorem ipsum dolor <b>The Batman</b> sit amet" },
+    { "title": "The Northman", "type": "Action", "description": "Lorem ipsum dolor <b>The Northman</b> sit amet" },
+    { "title": "Doctor Strange", "type": "Action", "description": "Lorem ipsum dolor <b>Doctor Strange</b> sit amet" },
+    { "title": "Halo", "type": "Action", "description": "Lorem ipsum dolor <b>Halo</b> sit amet" },
+    { "title": "Spartacus", "type": "Action", "description": "Lorem ipsum dolor <b>Spartacus</b> sit amet" },
+    { "title": "The dark knight", "type": "Action", "description": "Lorem ipsum dolor <b>The dark knight</b> sit amet" },
+    { "title": "Wolves", "type": "Action", "description": "Lorem ipsum dolor <b>Wolves</b> sit amet" },
+    { "title": "Uncharted", "type": "Action", "description": "Lorem ipsum dolor <b>Uncharted</b> sit amet" },
+    { "title": "Top Gun", "type": "Action", "description": "Lorem ipsum dolor <b>Top Gun</b> sit amet" },
+    { "title": "John wick", "type": "Action", "description": "Lorem ipsum dolor <b>John wick</b> sit amet" },
+    { "title": "The train", "type": "Action", "description": "Lorem ipsum dolor <b>The train</b> sit amet" },
+    { "title": "Don't breath", "type": "Action", "description": "Lorem ipsum dolor <b>Don't breath</b> sit amet" }
   ],
-  "display": function () {
-    return this.title + ": \t" + this.type;
-  }
-
 }
 
 //Getting the main page
 function getMain(req, res) {
   var type = req.query.q;
   renderPar = our_films;
-  renderPar["type"] = type;
+  renderPar["searchedType"] = type;
   res.render('mainPage', renderPar)
 }
 
 router
   .get('/', getMain)
-  .get('/csp1', getMain)
+  .get('/csp1', (req, res, next) => {
+    res.set('Content-Security-Policy', 'script-src none');
+    next();
+  }, getMain)
 
   // , (req, res) => {
   //   res.setHeader('Content-Type', 'text/html');
