@@ -1,9 +1,8 @@
 const express = require('express');
-const { send } = require('express/lib/response');
+const crypto = require('crypto');
 const router = express.Router()
 
-
-var our_films = {
+const our_films = {
   "films": [
     { "title": "Fast & Furious", "type": "Action", "description": "Lorem ipsum dolor <b>Fast & Furious</b> sit amet" },
     { "title": "Moon knight", "type": "Action", "description": "Lorem ipsum dolor <b>Moon knight</b> sit amet" },
@@ -20,34 +19,53 @@ var our_films = {
     { "title": "The train", "type": "Action", "description": "Lorem ipsum dolor <b>The train</b> sit amet" },
     { "title": "Don't breath", "type": "Action", "description": "Lorem ipsum dolor <b>Don't breath</b> sit amet" }
   ],
-}
+
+  "cspVersions": [
+    { url: '/', label: 'no protection', exploit: 'include any <script> tag' },
+    { url: '/csp1', label: 'whitelist', exploit: 'load an old version of Angular from ajax.googleapis.com and execute code through an Angular expression [TODO: need to check if this actually works without having to add unsafe-eval]' },
+    { url: '/csp2', label: 'insecure nonce', exploit: 'include a <base> tag to point to a malicious movies.js file' },
+    { url: '/csp3', label: 'secure nonce', exploit: 'hopefully none, but non-XSS attacks are still possible' },
+  ]
+};
 
 //Getting the main page
 function getMain(req, res) {
   var type = req.query.q;
-  renderPar = our_films;
-  renderPar["searchedType"] = type;
+  renderPar = {
+    ...our_films,
+    searchedType: type,
+    reqPath: req.baseUrl + req.path,
+    activeCspString: res.get('Content-Security-Policy') || 'N/A',
+    activeCspVersion: our_films.cspVersions.find(({ url }) => req.path === url) || {},
+  };
   res.render('mainPage', renderPar)
 }
 
 router
   .get('/', getMain)
+
+  // Whitelist
   .get('/csp1', (req, res, next) => {
-    res.set('Content-Security-Policy', "script-src 'self' https://ajax.googleapis.com/");
+    res.set('Content-Security-Policy', "object-src 'none'; script-src 'self' https://cdnjs.cloudflare.com/");
     next();
   }, getMain)
 
-  // , (req, res) => {
-  //   res.setHeader('Content-Type', 'text/html');
-  //   res.setHeader('Set-Cookie', ['security=csp1']);
-  //   res.send("This is csp1")
-  // })
-  .get('/csp2', getMain)
-// , (req, res) => {
-//   res.setHeader('Content-Type', 'text/html');
-//   res.setHeader('Set-Cookie', ['security=csp2']);
-//   res.send("This is csp2")
-// })
+  // Nonces, but without base-uri
+  .get('/csp2', (req, res, next) => {
+    const nonce = crypto.randomBytes(16).toString('base64');
+    res.set('Content-Security-Policy', `object-src 'none'; script-src 'nonce-${nonce}'`);
+    res.locals.nonce = nonce;
+    next();
+  }, getMain)
+
+
+  // Nonces, with base-uri
+  .get('/csp3', (req, res, next) => {
+    const nonce = crypto.randomBytes(16).toString('base64');
+    res.set('Content-Security-Policy', `object-src 'none'; script-src 'nonce-${nonce}'; base-uri 'none'`);
+    res.locals.nonce = nonce;
+    next();
+  }, getMain)
 
 
 module.exports = router
