@@ -22,18 +22,24 @@ const our_films = {
 
   "cspVersions": [
     { url: '/', label: 'no protection', exploit: 'include any <script> tag' },
-    { url: '/csp1', label: 'whitelist', exploit: 'load an old version of Angular from ajax.googleapis.com and execute code through an Angular expression [TODO: need to check if this actually works without having to add unsafe-eval]' },
+    { url: '/csp1', label: 'whitelist', exploit: 'load an old version of Angular from cdnjs.cloudflare.com and execute code through an Angular expression [TODO: need to check if this actually works without having to add unsafe-eval]' },
     { url: '/csp2', label: 'insecure nonce', exploit: 'include a <base> tag to point to a malicious movies.js file' },
     { url: '/csp3', label: 'secure nonce', exploit: 'hopefully none, but non-XSS attacks are still possible' },
   ]
 };
 
-//Getting the main page
+/**
+ * Renders the main page.
+ * 
+ * @param {express.Request} req 
+ * @param {express.Response} res 
+ */
 function getMain(req, res) {
   var type = req.query.q;
   renderPar = {
     ...our_films,
     searchedType: type,
+    basePath: req.protocol + '://' + req.get('host'),
     reqPath: req.baseUrl + req.path,
     activeCspString: res.get('Content-Security-Policy') || 'N/A',
     activeCspVersion: our_films.cspVersions.find(({ url }) => req.path === url) || {},
