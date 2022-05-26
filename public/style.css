@@ -85,7 +85,13 @@ section {
   word-wrap: break-word;
 }
 
-p,
+p {
+  color: #3ba0e6
+}
+
+h2 {
+  color: #b8860b
+}
 div {
   color: #FFF;
   overflow: hidden;

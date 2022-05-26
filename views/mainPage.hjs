@@ -34,7 +34,7 @@
     <input type="submit" value="Search">
   </form>
   
-  <p>We propose the following films for <b>{{{searchedType}}}</b> type:</p>
+  <h2>We propose the following films for <b>{{{searchedType}}}</b> type:</h2>
   <table>
     <tr>
       <th>Title</th>
