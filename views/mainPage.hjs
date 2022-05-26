@@ -19,13 +19,13 @@
   <div>
     Switch to CSP protection:
     {{#cspVersions}}
-    &nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url}}">{{label}}</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;<a href="{{basePath}}{{url}}">{{label}}</a>
     {{/cspVersions}}
   </div>
   
   <hr>
   
-  <form action="{{reqPath}}" method="get">
+  <form action="{{basePath}}{{reqPath}}" method="get">
     <input type="search" name="q" value="{{searchedType}}" placeholder="Search type ..." size="70">
     <input type="submit" value="Search">
   </form>

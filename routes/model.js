@@ -28,12 +28,18 @@ const our_films = {
   ]
 };
 
-//Getting the main page
+/**
+ * Renders the main page.
+ * 
+ * @param {express.Request} req 
+ * @param {express.Response} res 
+ */
 function getMain(req, res) {
   var type = req.query.q;
   renderPar = {
     ...our_films,
     searchedType: type,
+    basePath: req.protocol + '://' + req.get('host'),
     reqPath: req.baseUrl + req.path,
     activeCspString: res.get('Content-Security-Policy') || 'N/A',
     activeCspVersion: our_films.cspVersions.find(({ url }) => req.path === url) || {},
