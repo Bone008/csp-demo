@@ -22,7 +22,7 @@ const our_films = {
 
   "cspVersions": [
     { url: '/', label: 'no protection', exploit: 'include any <script> tag' },
-    { url: '/csp1', label: 'whitelist', exploit: 'load an old version of Angular from ajax.googleapis.com and execute code through an Angular expression [TODO: need to check if this actually works without having to add unsafe-eval]' },
+    { url: '/csp1', label: 'whitelist', exploit: 'load an old version of Angular from cdnjs.cloudflare.com and execute code through an Angular expression [TODO: need to check if this actually works without having to add unsafe-eval]' },
     { url: '/csp2', label: 'insecure nonce', exploit: 'include a <base> tag to point to a malicious movies.js file' },
     { url: '/csp3', label: 'secure nonce', exploit: 'hopefully none, but non-XSS attacks are still possible' },
   ]
