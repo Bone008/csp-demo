@@ -1,0 +1,101 @@
+.content {
+  margin: 0px;
+  padding: 0px;
+  ;
+}
+
+#deux-button {
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+html {
+  line-height: 1.15;
+  /* 1 */
+}
+
+article,
+time,
+aside,
+footer,
+header,
+nav,
+div,
+section {
+  display: block;
+}
+
+body {
+  line-height: 17px;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-size: medium;
+  background-color: #000;
+  background-repeat: repeat-x, repeat;
+  background-position: top left, top left;
+}
+
+img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+
+}
+
+aside {
+  margin-top: 55px;
+
+}
+
+h1 {
+  font-family: 'Amatic SC', cursive;
+}
+
+time,
+p,
+footer {
+  padding-left: 10px;
+}
+
+
+h1 {
+  color: #b8860b;
+  font-size: 3.2em;
+  text-align: center;
+  padding: 0;
+}
+
+span {
+  color: #a16060;
+  font-size: 1em;
+}
+
+footer {
+  text-align: left;
+  color: #FFF;
+  padding-bottom: 8px;
+  font-size: 90%;
+}
+
+h1,
+p,
+section {
+  word-wrap: break-word;
+}
+
+p,
+div {
+  color: #FFF;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table,
+tr,
+th,
+td {
+  color: #eee;
+  border: 1px solid;
+}
