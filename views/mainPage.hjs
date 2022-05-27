@@ -7,10 +7,27 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    
+    {{#FineGrainedTT}}
 
+    <meta http-equiv="Content-Security-Policy" content="require-trusted-types-for 'script'">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.2.7/purify.min.js"></script>
+
+    <script>
+    if (window.trustedTypes && trustedTypes.createPolicy) { // Feature testing
+      trustedTypes.createPolicy('default', {
+        createHTML: string => DOMPurify.sanitize(string, {RETURN_TRUSTED_TYPE: true})
+      });
+    }
+    </script>
+    {{/FineGrainedTT}}
 </head>
 
 <body>
+  <h2 id="langIcon" > </h2>
+  <a id="lang" style="display: none;"> </a>
+  <script src="./lang.js" nonce="{{nonce}}"></script>
+  
   <h1>CSP Demo</h1>
   <div>
     Current CSP:&nbsp;&nbsp;
@@ -21,21 +38,24 @@
     <i>{{activeCspVersion.exploit}}</i>
   </p>
   <div>
+    
     Switch to CSP protection:
     {{#cspVersions}}
-    &nbsp;&nbsp;&nbsp;&nbsp;<a href="{{basePath}}{{url}}">{{label}}</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;<a href="{{basePath}}{{url}}" class="button2">{{label}}</a>
     {{/cspVersions}}
   </div>
   
   <hr>
   
+  <div class="search-container">
   <form action="{{basePath}}{{reqPath}}" method="get">
     <input type="search" name="q" value="{{searchedType}}" placeholder="Search type ..." size="70">
     <input type="submit" value="Search">
   </form>
+  </div>
   
   <h2>We propose the following films for <b>{{{searchedType}}}</b> type:</h2>
-  <table>
+  <table id="films">
     <tr>
       <th>Title</th>
       <th>Type</th>
@@ -53,5 +73,11 @@
   </table>
   <script src="./movies.js" nonce="{{nonce}}"></script>
 </body>
+
+<footer id="end" class = "footer" >
+				<a href="#top" class="button2"> return top </a><br><br>
+				&copy; 2022, CSP demonstration
+		</footer>
+
 
 </html>
