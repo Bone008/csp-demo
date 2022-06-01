@@ -11,6 +11,3 @@ results = soup.find_all("div", {"class" : "col-6"})
 for element in results:
   if element.find("img"):
     urls.append(element.text.strip())
-  
-
-
