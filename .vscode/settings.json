@@ -5,5 +5,8 @@
     "editor.formatOnSaveMode": "modificationsIfAvailable",
     "[json]": {
         "editor.formatOnSave": false
-    }
+    },
+    "[python]": {
+        "editor.formatOnSave": false
+    },
 }
