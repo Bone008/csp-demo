@@ -22,11 +22,10 @@ const our_films = {
 
   "cspVersions": [
     { url: '/', label: 'no protection', exploit: 'include any <script> tag' },
-    { url: '/csp1', label: 'whitelist', exploit: 'load an old version of Angular from cdnjs.cloudflare.com and execute code through an Angular expression [TODO: need to check if this actually works without having to add unsafe-eval]' },
+    { url: '/csp1', label: 'whitelist', exploit: 'load an old version of Angular from cdnjs.cloudflare.com and execute code through an Angular expression' },
     { url: '/csp2', label: 'insecure nonce', exploit: 'include a <base> tag to point to a malicious movies.js file' },
-    { url: '/csp3', label: 'secure nonce', exploit: 'hopefully none, but non-XSS attacks are still possible' },
-    { url: '/csp4', label: 'Trusted types', exploit: 'Should be coupled with a defence mechanism against server side XSS '},
-    { url: '/csp5', label: 'Trusted types 2', exploit: ''},
+    { url: '/csp3', label: 'secure nonce', exploit: 'none for server-side XSS, but exploitation of DOM-based XSS is still possible through a gadget in jQuery Mobile' },
+    { url: '/csp4', label: 'trusted types (with secure nonce)', exploit: 'hopefully none' },
   ]
 };
 
@@ -45,7 +44,6 @@ function getMain(req, res) {
     reqPath: req.baseUrl + req.path,
     activeCspString: res.get('Content-Security-Policy') || 'N/A',
     activeCspVersion: our_films.cspVersions.find(({ url }) => req.path === url) || {},
-    FineGrainedTT: res.FineGrainedTT,
   };
   res.render('mainPage', renderPar)
 }
@@ -62,7 +60,7 @@ router
   // Nonces, but without base-uri
   .get('/csp2', (req, res, next) => {
     const nonce = crypto.randomBytes(16).toString('base64');
-    res.set('Content-Security-Policy', `object-src 'none'; script-src 'nonce-${nonce}'`);
+    res.set('Content-Security-Policy', `object-src 'none'; script-src 'nonce-${nonce}' 'strict-dynamic'`);
     res.locals.nonce = nonce;
     next();
   }, getMain)
@@ -71,22 +69,18 @@ router
   // Nonces, with base-uri
   .get('/csp3', (req, res, next) => {
     const nonce = crypto.randomBytes(16).toString('base64');
-    res.set('Content-Security-Policy', `object-src 'none'; script-src 'nonce-${nonce}'; base-uri 'none'`);
+    res.set('Content-Security-Policy', `object-src 'none'; script-src 'nonce-${nonce}' 'strict-dynamic'; base-uri 'none'`);
     res.locals.nonce = nonce;
     next();
   }, getMain)
 
   .get('/csp4', (req, res, next) => {
-    res.set('Content-Security-Policy', `require-trusted-types-for 'script'`);
-    res.FineGrainedTT = true;
+    const nonce = crypto.randomBytes(16).toString('base64');
+    res.set('Content-Security-Policy', `require-trusted-types-for 'script'; object-src 'none'; script-src 'nonce-${nonce}' 'strict-dynamic'; base-uri 'none'`);
+    res.locals.nonce = nonce;
+    res.locals.FineGrainedTT = true;
     next();
   }, getMain)
-
-  .get('/csp5', (req, res, next) => {
-    res.FineGrainedTT = true;
-    next();
-  }, getMain)
-
 
 
 

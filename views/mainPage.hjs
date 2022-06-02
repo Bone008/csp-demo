@@ -2,25 +2,31 @@
 <html>
 
 <head>
-  <title>CSP Demo</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" nonce="{{nonce}}"></script>
-		<link rel="stylesheet" type="text/css" href="style.css">
-		<link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
-    
-    {{#FineGrainedTT}}
+  {{#FineGrainedTT}}
+  <!-- When using Trusted Types, we register a default policy here that sanitizes HTML using DOMPurify. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.2.7/purify.min.js"></script>
 
-    <meta http-equiv="Content-Security-Policy" content="require-trusted-types-for 'script'">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.2.7/purify.min.js"></script>
-
-    <script>
+  <script nonce="{{nonce}}">
     if (window.trustedTypes && trustedTypes.createPolicy) { // Feature testing
       trustedTypes.createPolicy('default', {
-        createHTML: string => DOMPurify.sanitize(string, {RETURN_TRUSTED_TYPE: true})
+        createHTML: string => DOMPurify.sanitize(string, { RETURN_TRUSTED_TYPE: true })
       });
+    } else {
+      alert('Note: Trusted Types is not supported by this browser, so XSS protection through the "default" policy does not work.');
     }
-    </script>
-    {{/FineGrainedTT}}
+</script>
+{{/FineGrainedTT}}
+<title>CSP Demo</title>
+
+<!-- jQuery is used as an example for an external library that this site depends on. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" nonce="{{nonce}}"></script>
+
+<!-- jQuery Mobile contains an exploitable gadget for DOM XSS that works without allowing inline scripts. -->
+<script src="{{basePath}}/jquery.mobile-1.5.0-rc1.min.js" nonce="{{nonce}}"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+<link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
 </head>
 
 <body>
@@ -71,13 +77,13 @@
     </tr>
     {{/films}}
   </table>
-  <script src="./movies.js" nonce="{{nonce}}"></script>
-</body>
 
-<footer id="end" class = "footer" >
+  <footer id="end" class="footer">
 				<a href="#top" class="button2"> return top </a><br><br>
 				&copy; 2022, CSP demonstration
-		</footer>
+  </footer>
 
+  <script src="./movies.js" nonce="{{nonce}}"></script>
+  </body>
 
 </html>

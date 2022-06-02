@@ -1,12 +1,15 @@
 $(function () {
-  // Super pro functionality for toggle buttons
+  // Super pro functionality for language switch
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
 
   const lang = urlParams.get('language');
   const langSink = document.getElementById('lang')
   const iconSink = document.getElementById('langIcon')
+
+  // NOTE: This assignment provides the attack vector without the presence of Trusted Types!
   langSink.innerHTML = lang
+
   switch(lang){
     case "EN":
       // English
