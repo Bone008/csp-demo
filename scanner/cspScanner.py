@@ -1,7 +1,8 @@
 import logging
 import requests
 import sys
-from scrapUrls import urls
+from scrapUrls import collect_urls
+
 """
 First test on our csp demo
 """
@@ -11,6 +12,9 @@ First test on our csp demo
 # csp = resp.getheader("Content-Security-Policy")
 # print(csp)
 # conn.close()
+
+
+CSV_HEADER = ['domain', 'url', 'has_csp', 'has_reporting_csp', 'has_meta_csp', 'has_html', 'csp_default_src', 'csp_script_src', 'csp']
 
 def getCSP(dn):
   """
@@ -32,15 +36,25 @@ def getCSP(dn):
 
     if not csp and has_reporting_csp:
       csp = csp_report_only
+    
+    # Extract default-src and script-src for easier analysis
+    csp_default_src = None
+    csp_script_src = None
+    if csp:
+      for part in csp.split(';'):
+        spart = part.strip()
+        if spart.startswith('default-src'):
+          csp_default_src = spart
+        if spart.startswith('script-src'):
+          csp_script_src = spart
+      
 
-    csv_row = [dn, resp.url, has_csp, has_reporting_csp, has_meta_csp, has_html, csp]
+    csv_row = [dn, resp.url, has_csp, has_reporting_csp, has_meta_csp, has_html, csp_default_src, csp_script_src, csp]
   except Exception as e:
     logging.exception(e)
-    csv_row = [dn, 'CONNECTION ERROR', None, None, None, None, None]
+    csv_row = [dn, 'CONNECTION ERROR', None, None, None, None, None, None, None]
 
-  print(','.join(f'"{x}"' if isinstance(x, str) else str(x)
-          for x in csv_row))
-  return csp
+  return csv_row
 
 def getCSPFromAbsoluteUrl(url):
   page = requests.get(url)
@@ -53,21 +67,20 @@ def analyzePolicy(csPolicy):
   return 
 
 
-def noCSP():
-    """ Filters websites with no csp policy"""
-    print(f" Number of websites {len(urls)}", file=sys.stderr)
-    print(','.join(['domain', 'url', 'has_csp', 'has_reporting_csp', 'has_meta_csp', 'has_html', 'csp']))
-    count = 0
-    for i, url in enumerate(urls):
-      csp = getCSP(url)
-      if csp:
-        #print(count, url, csp)
-        pass
-      else:
-        #print(count, url, "No CSP")
-        count += 1
-      print(f'[{i: 3} / {len(urls)}]', url, bool(csp), file=sys.stderr)
-    print(f"Number of websites that implement CSP is :{len(urls) - count}", file=sys.stderr)
+def main():
+  urls = collect_urls()
+  print(f" Number of websites {len(urls)}", file=sys.stderr)
+  print(','.join(CSV_HEADER))
+  for i, url in enumerate(urls):
+    if i < 849:
+      continue
+    csv_row = getCSP(url)
+    print(','.join(f'"{x}"' if isinstance(x, str) else str(x)
+            for x in csv_row))
+            
+    print(f'[{i: 3} / {len(urls)}]', url, bool(csv_row[-1]), file=sys.stderr)
+    sys.stdout.flush()
   
 
-noCSP()
+if __name__ == '__main__':
+  main()
