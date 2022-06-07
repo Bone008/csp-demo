@@ -4,7 +4,7 @@
 <head>
   {{#FineGrainedTT}}
   <!-- When using Trusted Types, we register a default policy here that sanitizes HTML using DOMPurify. -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.2.7/purify.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.2.7/purify.min.js" nonce="{{nonce}}"></script>
 
   <script nonce="{{nonce}}">
     if (window.trustedTypes && trustedTypes.createPolicy) { // Feature testing
