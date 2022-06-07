@@ -3,10 +3,10 @@ $(function () {
   $('.btn-toggle').click(function () {
     const description = $(this).closest('.movie').find('.description');
     if ($(this).text() === 'Show more') {
-      description.show();
+      description.css('visibility', 'visible');
       $(this).text("Show less");
     } else {
-      description.hide();
+      description.css('visibility', 'hidden');
       $(this).text("Show more");
     }
   });

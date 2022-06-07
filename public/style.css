@@ -1,39 +1,29 @@
-.content {
-  margin: 0px;
-  padding: 0px;
-  ;
-}
-
-#deux-button {
-  padding-bottom: 5px;
-  text-align: center;
-}
-
 html {
   line-height: 1.15;
   /* 1 */
 }
 
-article,
-time,
-aside,
-footer,
-header,
-nav,
-div,
-section {
-  display: block;
-}
-
 body {
   line-height: 17px;
   margin: 0;
-  padding: 0;
+  padding: 0 16px;
   font-family: sans-serif;
   font-size: medium;
   background-color: #000;
   background-repeat: repeat-x, repeat;
   background-position: top left, top left;
+  color: white;
+}
+  
+.content {
+  margin: 0px;
+  padding: 0px;
+  ;
+}
+  
+#deux-button {
+  padding-bottom: 5px;
+  text-align: center;
 }
 
 img {
@@ -51,25 +41,10 @@ aside {
 
 h1 {
   font-family: 'Amatic SC', cursive;
-}
-
-time,
-p,
-footer {
-  padding-left: 10px;
-}
-
-
-h1 {
   color: #b8860b;
   font-size: 3.2em;
   text-align: center;
   padding: 0;
-}
-
-span {
-  color: #a16060;
-  font-size: 1em;
 }
 
 footer {
@@ -77,6 +52,14 @@ footer {
   color: #FFF;
   padding-bottom: 8px;
   font-size: 90%;
+}
+
+.current-csp {
+  white-space: pre;
+  font-family: monospace;
+  padding: 0.5em 8px;
+  background-color: #334;
+  margin-top: 0.3em;
 }
 
 h1,
@@ -92,18 +75,13 @@ p {
 h2 {
   color: #b8860b
 }
-div {
-  color: #FFF;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
 table,
 tr,
 th,
 td {
   color: #eee;
-  border: 1px solid;
+  border: 1px solid #999;
 }
 .footer {
   position: fixed;
@@ -116,7 +94,7 @@ td {
 }
 
 .btn-toggle {
-  background-color: #1f251f;
+  background-color: #404e40;
   border: none;
   color: white;
   padding: 12px 25px;
@@ -129,9 +107,8 @@ td {
 }
 
 #films {
-  font-family: Arial, Helvetica, sans-serif;
+  min-width: 800px;
   border-collapse: collapse;
-  width: 100%;
 }
 
 #films th {
@@ -142,23 +119,13 @@ td {
   color: white;
 }
 
-a:link {
+a:link,
+a:visited {
   color: #b8860b;
 }
-
-/* visited link */
-a:visited {
-  color: green;
-}
-
-/* mouse over link */
-a:hover {
-  color: blue;
-}
-
-/* selected link */
+a:hover,
 a:active {
-  color: red;
+  color: blue;
 }
 
 #langIcon {
@@ -168,5 +135,16 @@ a:active {
   background: black;
   color: white;
   text-decoration: none;
-  padding-left: 20px;
+}
+
+.search-container input {
+  height: 2.3em;
+}
+
+/* jQuery Mobile crap */
+.ui-textinput {
+  display: inline-block;
+}
+.ui-textinput-clear-button {
+  display: none;
 }

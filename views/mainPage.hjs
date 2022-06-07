@@ -21,8 +21,10 @@
 <!-- jQuery is used as an example for an external library that this site depends on. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" nonce="{{nonce}}"></script>
 
+{{#WithjQueryMobile}}
 <!-- jQuery Mobile contains an exploitable gadget for DOM XSS that works without allowing inline scripts. -->
 <script src="{{basePath}}/jquery.mobile-1.5.0-rc1.min.js" nonce="{{nonce}}"></script>
+{{/WithjQueryMobile}}
 
 <link rel="stylesheet" type="text/css" href="style.css">
 <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
@@ -36,11 +38,11 @@
   
   <h1>CSP Demo</h1>
   <div>
-    Current CSP:&nbsp;&nbsp;
-    <span style="white-space: pre; font-family: monospace;">{{activeCspString}}</span>
+    Content-Security-Policy:&nbsp;&nbsp;
+    <div class="current-csp">{{activeCspString}}</div>
   </div>
   <p>
-    Example of how to exploit it:&nbsp;&nbsp;
+    Hint for how to exploit it:&nbsp;&nbsp;
     <i>{{activeCspVersion.exploit}}</i>
   </p>
   <div>
@@ -65,22 +67,23 @@
     <tr>
       <th>Title</th>
       <th>Type</th>
-      <th></th>
-      <th></th>
+      <th>Description</th>
     </tr>
     {{#films}}
     <tr class="movie">
       <td>{{title}}</td>
       <td>{{type}}</td>
-      <td><button type="button" class="btn-toggle">Show more</button></td>
-      <td class="description" style="display: none;">{{{description}}}</td>
+      <td>
+        <button type="button" class="btn-toggle">Show more</button>
+        <span class="description" style="visibility: hidden;">{{{description}}}</span>
+      </td>
     </tr>
     {{/films}}
   </table>
 
   <footer id="end" class="footer">
 				<a href="#top" class="button2"> return top </a><br><br>
-				&copy; 2022, CSP demonstration
+        &copy; 2022, CSP demonstration, for educational purposes only
   </footer>
 
   <script src="./movies.js" nonce="{{nonce}}"></script>

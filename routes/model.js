@@ -71,6 +71,7 @@ router
     const nonce = crypto.randomBytes(16).toString('base64');
     res.set('Content-Security-Policy', `object-src 'none'; script-src 'nonce-${nonce}' 'strict-dynamic'; base-uri 'none'`);
     res.locals.nonce = nonce;
+    res.locals.WithjQueryMobile = true;
     next();
   }, getMain)
 
@@ -78,6 +79,7 @@ router
     const nonce = crypto.randomBytes(16).toString('base64');
     res.set('Content-Security-Policy', `require-trusted-types-for 'script'; object-src 'none'; script-src 'nonce-${nonce}' 'strict-dynamic'; base-uri 'none'`);
     res.locals.nonce = nonce;
+    res.locals.WithjQueryMobile = true;
     res.locals.FineGrainedTT = true;
     next();
   }, getMain)
